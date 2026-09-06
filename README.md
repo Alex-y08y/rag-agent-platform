@@ -1,5 +1,16 @@
 # 企业级 RAG + Agent 智能知识库平台
 
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-Agent-FF6B6B)
+![Milvus](https://img.shields.io/badge/Milvus-Vector%20DB-00A3E0)
+![Elasticsearch](https://img.shields.io/badge/Elasticsearch-BM25-005571?logo=elasticsearch&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-112%20passed-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 > 一个可直接用于 GitHub 求职展示的完整企业级 AI 应用项目：真 RAG + 真 Agent + 真评测 + 完整前后端 + Docker 部署 + 自动化测试。
 
 ---
@@ -706,29 +717,47 @@ python scripts/seed_demo_data.py
 
 ### 最适合简历的 10 个项目亮点
 
-1. **从零构建企业级 RAG + Agent 平台**，涵盖文档解析、混合检索、Agent、评测全链路
-2. **真 RAG 实现**：BGE-M3 本地 Embedding + Milvus + Elasticsearch BM25 + RRF 融合 + BGE Reranker
-3. **真 Agent 实现**：LangGraph 状态机 + ReAct 循环 + 5 个 Tool Calling + SQL 安全校验
-4. **完整评测体系**：55 题评测集，Recall/Precision/MRR/Accuracy/Faithfulness/Relevancy 12 项指标真实计算
-5. **四版本对比实验**：Baseline → Hybrid → +Reranker → +Rewrite，量化每次优化效果
-6. **免费本地 AI 模型**：Embedding 和 Reranker 均使用 BGE 开源模型本地部署，零 API 成本
-7. **工程化质量**：FastAPI + Pydantic + SQLAlchemy + async/await + logging + 13 个 pytest 测试文件
-8. **完整前端**：React + TypeScript + Ant Design + ECharts，6 个页面，SSE 流式对话
-9. **生产级特性**：Query Rewrite、Context Compression、Redis 记忆、Citation 引用、Agent Trace
-10. **Docker 一键部署**：全栈 Compose（6 个服务）+ 轻量模式，开箱即用
+1. **全栈企业级 AI 应用从零到一**：独立完成 React+TS 前端（6 页面）、FastAPI 后端（15+ API）、LangGraph Agent、RAG 检索、离线评测、Docker 部署全链路，非 Demo 级集成，可直接 `docker compose up` 运行演示。
+
+2. **真 RAG 检索引擎**：BGE-M3 本地 Embedding（1024 维，CPU/GPU 自适应）+ Milvus 向量检索 + Elasticsearch BM25 + RRF 分数级融合 + BGE Reranker 交叉编码器重排，五层检索管线全部真实实现，零付费 Embedding API。
+
+3. **真 Agent 工具调用**：基于 LangGraph 状态机实现 7 节点 Agent（意图识别→查询改写→规划→工具调用→观察→验证→最终回答），支持 5 个 Tool（知识库检索/SQL 查询/计算器/文档分析/Web 搜索），SQL 工具含只读安全校验层，最大循环 5 次防死循环。
+
+4. **意图路由双模式**：Agent 首节点判别用户意图，寒暄/通用常识走直答模式（3 秒返回，0 工具调用），企业内部数据查询走完整 RAG+工具链，避免所有问题都强制检索导致的延迟浪费。
+
+5. **完整 RAG 离线评测体系**：自建 55 题中文评测集（覆盖事实/政策/数字/多跳/指代 8 类），真实计算 Recall@K、Precision@K、MRR、Accuracy、Faithfulness、Answer Relevancy 共 12 项指标，区分 Retrieval Problem 与 Generation Problem。
+
+6. **四版本 RAG 对比实验**：Baseline（纯向量）→ Hybrid（+BM25+RRF）→ +Reranker → +Query Rewrite，同一评测集横向对比 8 项指标，用数据量化每次优化的收益，面试可直接展示对比图表。
+
+7. **生产级问答体验**：SSE 流式输出、Markdown/表格/代码块渲染、Citation 引用来源（文档名+页码+Section+Chunk 原文可展开）、Redis 多轮对话记忆（长对话自动摘要）、Agent Trace 全链路节点耗时追踪。
+
+8. **工程化质量保障**：Python Type Hint + Pydantic 参数校验 + SQLAlchemy ORM + async/await 全异步 + structured logging（request_id/conversation_id）+ 全局异常处理，**112 个 pytest 测试全部通过**（13 个测试文件覆盖分块/检索/指标/工具/Agent/API）。
+
+9. **文档 Ingestion 管线**：支持 PDF/DOCX/TXT/Markdown/CSV/XLSX 六种格式，三种分块策略（递归字符/Markdown 标题/结构感知），完整状态机 UPLOADING→PARSING→CHUNKING→EMBEDDING→INDEXING→SUCCESS，Milvus Collection 维度自动适配模型。
+
+10. **Docker 一键部署 + 资源友好**：8 容器 Compose 全栈部署（frontend/backend/postgres/redis/milvus/elasticsearch/etcd/minio），提供轻量模式适配低资源机器，模型缓存可挂载到任意磁盘，后端 Dockerfile 优化至 CPU-only PyTorch 避免 2GB+ CUDA 依赖。
 
 ### 最适合面试展示的 10 个技术点
 
-1. **Hybrid Search + RRF 融合**的原理和实现
-2. **BGE-M3 Embedding** 的本地部署和维度自动检测
-3. **BGE Reranker** 交叉编码器 vs 双编码器的区别
-4. **Query Rewrite** 如何解决多轮对话的指代消解
-5. **LangGraph Agent** 的状态机设计和防无限循环机制
-6. **SQL Tool 安全校验**的多层防护
-7. **RAG 评测指标**（Recall/Precision/MRR）的真实计算和解读
-8. **Retrieval Problem vs Generation Problem** 的诊断方法
-9. **Context Compression** 降低 Token 消耗和幻觉的策略
-10. **四版本 RAG 对比实验**的设计思路和结论分析
+1. **Hybrid Search + RRF 融合**：为什么向量检索不够（专业术语/数字/编号召回差）、BM25 与向量的互补性、RRF 为何优于加权分数融合（无需归一化、无超参、排名敏感），可现场对比纯向量与 Hybrid 的 Recall@5 差异。
+
+2. **BGE-M3 本地 Embedding 工程化**：HuggingFace 本地加载 + 模型缓存 + Batch Embedding + CPU/CUDA 自动切换 + 维度自动检测，Milvus Collection 根据模型维度动态创建，不硬编码 dimension。
+
+3. **Reranker 交叉编码器原理**：双编码器（Embedding）vs 交叉编码器（Reranker）的架构差异、为什么 Reranker 能捕捉细粒度交互、Precision@5 提升机制、计算成本与召回率的权衡。
+
+4. **Query Rewrite 指代消解**：多轮对话中上下文缺失问题、用 LLM 结合历史重写查询的实现、Rewrite 对多轮 Recall 的提升、什么场景下不该 Rewrite（避免引入噪声）。
+
+5. **LangGraph 状态机设计**：7 节点状态图、条件边路由（直答 vs 工具链）、状态在节点间传递、最大迭代次数+超时+Verification 重试三层防无限循环、Agent Trace 可观测性设计。
+
+6. **SQL Tool 安全架构**：只读白名单（仅 SELECT/WITH）、禁止关键字正则校验、强制 LIMIT 子句、错误隔离不阻塞 Agent 流程，可现场演示 DROP 语句被拦截。
+
+7. **RAG 评测指标体系**：Recall/Precision/MRR 的公式与真实计算代码、Retrieval Quality vs Generation Quality 的诊断方法论、LLM-as-a-Judge 用于 Faithfulness/Relevancy 的 Prompt 设计、Rule-based 与 LLM Judge 的适用场景划分。
+
+8. **Context Compression 策略**：分数阈值过滤 + n-gram Jaccard 去重 + 句子级关键词过滤 + 长度截断，四层压缩如何在减少 30-50% Token 的同时不丢失关键信息，压缩对幻觉和延迟的间接影响。
+
+9. **Citation 引用可追溯机制**：检索结果携带 document_id/source/page/section/chunk_id，LLM 生成后 Citation 模块将答案片段映射回 Chunk，前端支持点击展开原文，从机制上降低"根据相关资料"式无来源回答。
+
+10. **四版本 RAG 对比实验设计**：控制变量法（同一评测集、同一 Top-K、同一 LLM）、每个版本解决的具体问题（Hybrid 解决术语召回、Reranker 解决排序精度、Rewrite 解决多轮指代）、如何用 Latency-Accuracy 曲线做工程取舍。
 
 ## 33. 面试指南 Interview Guide
 
