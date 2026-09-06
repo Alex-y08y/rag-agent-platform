@@ -11,7 +11,7 @@
 ![Tests](https://img.shields.io/badge/tests-112%20passed-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-> 一个可直接用于 GitHub 求职展示的完整企业级 AI 应用项目：真 RAG + 真 Agent + 真评测 + 完整前后端 + Docker 部署 + 自动化测试。
+> 一个完整的企业级 AI 应用项目：真 RAG + 真 Agent + 真评测 + 完整前后端 + Docker 部署 + 自动化测试。
 
 ---
 
@@ -48,8 +48,7 @@
 29. [本地启动](#29-本地启动)
 30. [测试](#30-测试)
 31. [Demo 使用](#31-demo-使用)
-32. [项目亮点](#32-项目亮点)
-33. [面试指南 Interview Guide](#33-面试指南-interview-guide)
+32. [核心技术亮点](#32-核心技术亮点)
 
 ---
 
@@ -67,7 +66,6 @@
 - 实现**真评测**：Recall/Precision/MRR/Accuracy/Faithfulness/Relevancy 真实计算
 - 前后端分离，完整 UI 交互
 - Docker 一键部署
-- 可作为 AI 应用工程师 / LLM Application Engineer 求职项目展示
 
 ## 3. 项目特点
 
@@ -510,7 +508,7 @@ MRR = (1 + 0.5 + 0.2) / 3 = 0.567
 | Relevancy | - | - | - | - |
 | Latency | - | - | - | - |
 
-让面试官直观看到**每次优化到底解决了什么问题**：
+从对比中可以直观看到**每次优化到底解决了什么问题**：
 - Hybrid → 提升术语/数字的 Recall
 - Reranker → 提升 Precision 和 MRR
 - Rewrite → 提升多轮对话 Accuracy
@@ -713,135 +711,27 @@ python scripts/seed_demo_data.py
 - 输入 Conversation ID
 - 查看完整执行链：Intent → Plan → Tool Call → Observe → Verify
 
-## 32. 项目亮点
+## 32. 核心技术亮点
 
-### 最适合简历的 10 个项目亮点
+1. **全栈 AI 应用架构**：React+TypeScript 前端（6 页面）、FastAPI 后端（15+ API）、LangGraph Agent、RAG 检索引擎、离线评测体系、Docker 全栈部署，完整闭环可直接运行。
 
-1. **全栈企业级 AI 应用从零到一**：独立完成 React+TS 前端（6 页面）、FastAPI 后端（15+ API）、LangGraph Agent、RAG 检索、离线评测、Docker 部署全链路，非 Demo 级集成，可直接 `docker compose up` 运行演示。
+2. **五层 RAG 检索管线**：BGE-M3 本地 Embedding（1024 维，CPU/GPU 自适应）→ Milvus 向量检索 → Elasticsearch BM25 关键词检索 → RRF 分数级融合 → BGE Reranker 交叉编码器重排，全部真实实现，零付费 Embedding API。
 
-2. **真 RAG 检索引擎**：BGE-M3 本地 Embedding（1024 维，CPU/GPU 自适应）+ Milvus 向量检索 + Elasticsearch BM25 + RRF 分数级融合 + BGE Reranker 交叉编码器重排，五层检索管线全部真实实现，零付费 Embedding API。
+3. **LangGraph 状态机 Agent**：7 节点执行图（意图识别→查询改写→规划→工具调用→观察→验证→最终回答），条件边路由（直答模式 vs 工具链模式），最大迭代 5 次 + 超时 + Verification 重试三层防无限循环。
 
-3. **真 Agent 工具调用**：基于 LangGraph 状态机实现 7 节点 Agent（意图识别→查询改写→规划→工具调用→观察→验证→最终回答），支持 5 个 Tool（知识库检索/SQL 查询/计算器/文档分析/Web 搜索），SQL 工具含只读安全校验层，最大循环 5 次防死循环。
+4. **意图路由双模式**：首节点判别用户意图，寒暄/通用常识走直答模式（3 秒返回，0 工具调用），企业内部数据查询走完整 RAG+工具链，避免所有问题强制检索的延迟浪费。
 
-4. **意图路由双模式**：Agent 首节点判别用户意图，寒暄/通用常识走直答模式（3 秒返回，0 工具调用），企业内部数据查询走完整 RAG+工具链，避免所有问题都强制检索导致的延迟浪费。
+5. **5 个 Tool Calling**：知识库检索、SQL 查询（只读安全校验，仅 SELECT/WITH，强制 LIMIT）、计算器、文档分析、Web 搜索，每个 Tool 含 Pydantic Input Schema、错误处理和 fallback。
 
-5. **完整 RAG 离线评测体系**：自建 55 题中文评测集（覆盖事实/政策/数字/多跳/指代 8 类），真实计算 Recall@K、Precision@K、MRR、Accuracy、Faithfulness、Answer Relevancy 共 12 项指标，区分 Retrieval Problem 与 Generation Problem。
+6. **完整 RAG 离线评测**：自建 55 题中文评测集（事实/政策/数字/多跳/指代 8 类），真实计算 Recall@K、Precision@K、MRR、Accuracy、Faithfulness、Answer Relevancy 共 12 项指标，区分 Retrieval Problem 与 Generation Problem。
 
-6. **四版本 RAG 对比实验**：Baseline（纯向量）→ Hybrid（+BM25+RRF）→ +Reranker → +Query Rewrite，同一评测集横向对比 8 项指标，用数据量化每次优化的收益，面试可直接展示对比图表。
+7. **四版本 RAG 对比实验**：Baseline（纯向量）→ Hybrid（+BM25+RRF）→ +Reranker → +Query Rewrite，同一评测集横向对比 8 项指标，量化每次优化的收益与延迟 trade-off。
 
-7. **生产级问答体验**：SSE 流式输出、Markdown/表格/代码块渲染、Citation 引用来源（文档名+页码+Section+Chunk 原文可展开）、Redis 多轮对话记忆（长对话自动摘要）、Agent Trace 全链路节点耗时追踪。
-
-8. **工程化质量保障**：Python Type Hint + Pydantic 参数校验 + SQLAlchemy ORM + async/await 全异步 + structured logging（request_id/conversation_id）+ 全局异常处理，**112 个 pytest 测试全部通过**（13 个测试文件覆盖分块/检索/指标/工具/Agent/API）。
+8. **生产级问答体验**：SSE 流式输出、Markdown/表格/代码块渲染、Citation 引用来源（文档名+页码+Section+Chunk 原文可展开）、Redis 多轮对话记忆（长对话自动摘要）、Agent Trace 全链路节点耗时追踪。
 
 9. **文档 Ingestion 管线**：支持 PDF/DOCX/TXT/Markdown/CSV/XLSX 六种格式，三种分块策略（递归字符/Markdown 标题/结构感知），完整状态机 UPLOADING→PARSING→CHUNKING→EMBEDDING→INDEXING→SUCCESS，Milvus Collection 维度自动适配模型。
 
-10. **Docker 一键部署 + 资源友好**：8 容器 Compose 全栈部署（frontend/backend/postgres/redis/milvus/elasticsearch/etcd/minio），提供轻量模式适配低资源机器，模型缓存可挂载到任意磁盘，后端 Dockerfile 优化至 CPU-only PyTorch 避免 2GB+ CUDA 依赖。
-
-### 最适合面试展示的 10 个技术点
-
-1. **Hybrid Search + RRF 融合**：为什么向量检索不够（专业术语/数字/编号召回差）、BM25 与向量的互补性、RRF 为何优于加权分数融合（无需归一化、无超参、排名敏感），可现场对比纯向量与 Hybrid 的 Recall@5 差异。
-
-2. **BGE-M3 本地 Embedding 工程化**：HuggingFace 本地加载 + 模型缓存 + Batch Embedding + CPU/CUDA 自动切换 + 维度自动检测，Milvus Collection 根据模型维度动态创建，不硬编码 dimension。
-
-3. **Reranker 交叉编码器原理**：双编码器（Embedding）vs 交叉编码器（Reranker）的架构差异、为什么 Reranker 能捕捉细粒度交互、Precision@5 提升机制、计算成本与召回率的权衡。
-
-4. **Query Rewrite 指代消解**：多轮对话中上下文缺失问题、用 LLM 结合历史重写查询的实现、Rewrite 对多轮 Recall 的提升、什么场景下不该 Rewrite（避免引入噪声）。
-
-5. **LangGraph 状态机设计**：7 节点状态图、条件边路由（直答 vs 工具链）、状态在节点间传递、最大迭代次数+超时+Verification 重试三层防无限循环、Agent Trace 可观测性设计。
-
-6. **SQL Tool 安全架构**：只读白名单（仅 SELECT/WITH）、禁止关键字正则校验、强制 LIMIT 子句、错误隔离不阻塞 Agent 流程，可现场演示 DROP 语句被拦截。
-
-7. **RAG 评测指标体系**：Recall/Precision/MRR 的公式与真实计算代码、Retrieval Quality vs Generation Quality 的诊断方法论、LLM-as-a-Judge 用于 Faithfulness/Relevancy 的 Prompt 设计、Rule-based 与 LLM Judge 的适用场景划分。
-
-8. **Context Compression 策略**：分数阈值过滤 + n-gram Jaccard 去重 + 句子级关键词过滤 + 长度截断，四层压缩如何在减少 30-50% Token 的同时不丢失关键信息，压缩对幻觉和延迟的间接影响。
-
-9. **Citation 引用可追溯机制**：检索结果携带 document_id/source/page/section/chunk_id，LLM 生成后 Citation 模块将答案片段映射回 Chunk，前端支持点击展开原文，从机制上降低"根据相关资料"式无来源回答。
-
-10. **四版本 RAG 对比实验设计**：控制变量法（同一评测集、同一 Top-K、同一 LLM）、每个版本解决的具体问题（Hybrid 解决术语召回、Reranker 解决排序精度、Rewrite 解决多轮指代）、如何用 Latency-Accuracy 曲线做工程取舍。
-
-## 33. 面试指南 Interview Guide
-
-### 20 个面试问题及回答
-
-**Q1: 为什么使用 Hybrid Search？纯向量检索不够吗？**
-
-> 向量检索擅长语义理解，但在处理专业术语、数字、编号、产品型号时效果差。比如查询"差旅报销500元"，向量检索可能返回语义相近但不含"500"的文档。BM25 关键词检索能精确匹配这些术语。Hybrid Search 结合两者优势，用 RRF 融合结果，Recall@5 相比纯向量提升约 15-30%。
-
-**Q2: BM25 的作用是什么？**
-
-> BM25 是基于词频和逆文档频率的关键词匹配算法。它的优势在于：1）精确匹配专业术语和数字；2）不需要训练，直接可用；3）对中文分词友好；4）查询延迟低。在 RAG 中作为向量检索的补充，专门捕捉"必须精确出现"的信息。
-
-**Q3: RRF 是什么？为什么不用加权分数融合？**
-
-> RRF（Reciprocal Rank Fusion）公式是 RRF(d)=Σ1/(k+rank(d))，k 默认 60。它只关心文档的排名位置，不关心原始分数。优势：1）不需要归一化不同检索器的分数（向量分数和 BM25 分数量级不同）；2）对排名靠前的文档给予高权重；3）无参数，效果稳定。加权融合需要调权重，且分数归一化容易引入偏差。
-
-**Q4: 为什么需要 Reranker？直接用检索结果不行吗？**
-
-> 向量检索和 BM25 都是"双编码器"——查询和文档分别编码后计算相似度，无法捕捉细粒度交互。Reranker 是"交叉编码器"，将查询和文档拼接后一起编码，能判断"这个词在这个上下文中是否相关"。Reranker 通常能将 Precision@5 提升 10-20%，是 RAG 系统的标准配置。
-
-**Q5: BGE-M3 为什么作为 Embedding？**
-
-> 1）免费开源，本地部署，零 API 成本；2）多语言支持，中文效果好；3）支持稠密向量、稀疏向量、多向量三种模式；4）维度 1024，表达能力强；5）HuggingFace 生态成熟，sentence-transformers 直接加载；6）支持 CPU/CUDA 自动切换，生产环境可 GPU 加速。
-
-**Q6: Chunk 怎么设计？太大太小有什么问题？**
-
-> 我用了三种策略：1）递归字符分块（默认 512 字符，重叠 64）；2）Markdown 标题分块（按 # ## 层级切分）；3）结构感知分块（尊重页码和章节边界）。Chunk 太大：单个 Chunk 信息密度低，检索不精准，浪费 Token；Chunk 太小：上下文不完整，LLM 无法理解，召回率下降。512 字符 + 64 重叠是经验最优值。
-
-**Q7: Recall@K 怎么计算？**
-
-> Recall@K = （Top-K 中被召回的相关文档数）/（Ground Truth 相关文档总数）。比如期望来源是 [travel_policy.pdf]，检索结果前 5 名包含它，则 Recall@5=1.0；如果前 5 名都没有，则 Recall@5=0。它衡量的是"该找的有没有找到"。
-
-**Q8: Precision@K 怎么计算？**
-
-> Precision@K = （Top-K 中相关文档数）/ K。比如 K=5，其中 2 个相关，则 Precision@5=0.4。它衡量的是"找出来的里面有多少是对的"。Recall 高 Precision 低说明检索太宽泛，Precision 高 Recall 低说明太严格。
-
-**Q9: MRR 怎么计算？有什么意义？**
-
-> MRR（Mean Reciprocal Rank）= 所有样本的 1/第一个正确文档排名 的平均值。比如正确文档排第 1 名 RR=1，排第 2 名 RR=0.5。MRR 关注"第一个正确结果排多靠前"，对搜索体验至关重要——用户通常只看前 3 条结果。
-
-**Q10: Retrieval Accuracy 和 Answer Accuracy 有什么区别？**
-
-> Retrieval Accuracy（用 Recall/Precision/MRR 衡量）关注"有没有检索到正确的文档"，是检索阶段的质量。Answer Accuracy 关注"LLM 生成的答案对不对"，是生成阶段的质量。两者可能不一致：检索正确但 LLM 理解错了（Generation Problem），或者 LLM 猜对了但检索错了。评测页面会逐题分析是哪种问题。
-
-**Q11: RAG 幻觉怎么降低？**
-
-> 多层防护：1）Hybrid Search + Reranker 提高检索质量，确保相关上下文进入 LLM；2）Context Compression 过滤无关信息，减少干扰；3）System Prompt 强制"只使用参考资料，找不到就说不知道"；4）Citation 机制让答案可追溯；5）Verification 节点验证答案是否被上下文支撑；6）Faithfulness 指标量化幻觉程度。
-
-**Q12: Query Rewrite 解决什么问题？**
-
-> 多轮对话中用户经常省略上下文或使用代词。比如上一轮问"差旅报销制度有什么变化"，当前问"什么时候生效"，直接检索"什么时候生效"完全找不到结果。Query Rewrite 用 LLM 结合历史重写为"公司2026年差旅报销制度什么时候生效"，大幅提升多轮对话的 Recall。
-
-**Q13: Agent 为什么使用 LangGraph？**
-
-> LangGraph 是基于状态机的 Agent 框架，相比简单的 ReAct 循环：1）显式定义节点和边，执行流程可控；2）状态在节点间传递，可持久化和回溯；3）支持条件边、循环、分支；4）内置 Human-in-the-loop 支持；5）与 LangChain 生态无缝集成。我的 Agent 有 7 个节点，最大 5 次循环，有超时和重试机制。
-
-**Q14: ReAct 是什么？**
-
-> ReAct = Reasoning + Acting，是 Agent 的经典范式：Think（思考下一步做什么）→ Act（调用工具）→ Observe（观察结果）→ 循环直到得到答案。我的 Agent 在此基础上增加了 Plan（多步规划）和 Verify（答案验证）节点，形成 Think→Plan→Act→Observe→Verify 的增强循环。
-
-**Q15: Tool Calling 怎么实现？**
-
-> 1）每个 Tool 有 name、description、Pydantic Input Schema；2）Intent 节点用 LLM 判断需要哪些工具；3）Plan 节点生成执行步骤；4）Tool Call 节点按计划执行，将输入参数传给对应 Tool；5）Observe 节点处理结果，决定是否需要下一步。SQL Tool 有安全校验层，只允许 SELECT。
-
-**Q16: Agent 如何防止无限循环？**
-
-> 四层防护：1）最大迭代次数 AGENT_MAX_ITERATIONS=5，超过强制退出；2）超时 AGENT_TIMEOUT_SECONDS=120；3）Verification 节点验证答案，最多重试 2 次后输出当前答案；4）每个 Tool 有独立的错误处理和 fallback，工具失败不阻塞流程。
-
-**Q17: 如何证明 RAG 优化有效？**
-
-> 通过四版本对比实验：Baseline（纯向量）→ Hybrid（+BM25+RRF）→ +Reranker → +Query Rewrite。每个版本在同一个 55 题评测集上跑，对比 Recall@5、Precision@5、MRR、Accuracy、Latency。比如 Hybrid 版本 Recall@5 提升 20%，Reranker 版本 Precision@5 提升 15%，Rewrite 版本多轮对话 Accuracy 提升 25%。用数据说话，而不是"感觉更好"。
-
-**Q18: Context Compression 怎么做的？**
-
-> 四步压缩：1）分数阈值过滤，去掉低相关 Chunk；2）基于字符 n-gram Jaccard 相似度去重；3）句子级过滤，保留包含查询关键词的句子；4）总长度截断到 8000 字符。目标是减少 30-50% 的 Token 消耗，同时不丢失关键信息，间接降低幻觉和延迟。
-
-**Q19: 文档解析支持哪些格式？有什么难点？**
-
-> 支持 PDF、DOCX、TXT、Markdown、CSV、XLSX 六种。难点：1）PDF 排版复杂，需要保留页码；2）DOCX 有标题层级，按标题切分效果更好；3）Markdown 用 # ## 层级切分；4）CSV/XLSX 按行批量切分，保留表头。不同格式用不同的 Chunking 策略，不是一刀切固定长度。
-
-**Q20: 这个项目最大的技术挑战是什么？怎么解决的？**
-
-> 最大挑战是**让整个链路真实可运行**，而不是堆技术名词。Milvus + Elasticsearch + BGE-M3 + BGE Reranker 四个服务的集成和调试非常耗时。解决方法：1）每个服务都做了优雅降级，连不上不崩溃；2）Embedding 和 Reranker 用本地模型，不依赖外部 API；3）Docker Compose 一键启动所有依赖；4）13 个测试文件确保核心逻辑正确。最终实现了从文档上传到问答到评测的完整闭环。
+10. **工程化质量保障**：Python Type Hint + Pydantic 参数校验 + SQLAlchemy ORM + async/await 全异步 + structured logging（request_id/conversation_id）+ 全局异常处理，112 个 pytest 测试全部通过（13 个测试文件）。
 
 ---
 
