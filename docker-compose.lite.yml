@@ -1,0 +1,32 @@
+version: '3.8'
+
+# Lightweight local development mode.
+# Uses SQLite instead of PostgreSQL, in-memory cache instead of Redis.
+# Milvus and Elasticsearch are optional - the app degrades gracefully.
+# For full features, use docker-compose.yml.
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DEBUG=true
+    volumes:
+      - ./data:/app/data
+      - ./backend/app:/app/app
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

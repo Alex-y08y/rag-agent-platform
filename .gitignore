@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Data (keep structure, ignore content)
+data/uploads/*
+data/model_cache/*
+data/logs/*
+data/config/*
+data/demo_db/*
+!data/uploads/.gitkeep
+!data/model_cache/.gitkeep
+!data/logs/.gitkeep
+!data/config/.gitkeep
+
+# Temp / debug artifacts
+debug*.png
+*.vhdx
+data/rebuild_seed.py
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Docker
+docker-compose.override.yml
